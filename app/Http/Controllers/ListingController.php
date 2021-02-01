@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreListingRequest;
+use App\Models\Category;
+use App\Models\Color;
 use App\Models\Listing;
-use Illuminate\Http\Request;
+use App\Models\Size;
 
 class ListingController extends Controller
 {
@@ -15,7 +17,7 @@ class ListingController extends Controller
      */
     public function index()
     {
-        $listings = Listing::all();
+        $listings = Listing::with(['categories', 'sizes', 'colors'])->get();
 
         return view('listings.index', compact('listings'));
     }
@@ -27,7 +29,12 @@ class ListingController extends Controller
      */
     public function create()
     {
-        return view('listings.create');
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
+
+        return view('listings.create',
+            compact('categories', 'sizes', 'colors'));
     }
 
     /**
@@ -45,6 +52,10 @@ class ListingController extends Controller
                 $listing->addMediaFromRequest('photo' . $i)->toMediaCollection('listings');
             }
         }
+
+        $listing->categories()->attach($request->categories);
+        $listing->sizes()->attach($request->sizes);
+        $listing->colors()->attach($request->colors);
 
         return redirect()->route('listings.index');
     }
@@ -69,10 +80,15 @@ class ListingController extends Controller
     public function edit(Listing $listing)
     {
         $this->authorize('update', $listing);
+        $listing->load('categories', 'sizes', 'colors');
 
         $media = $listing->getMedia('listings');
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
 
-        return view('listings.edit', compact('listing', 'media'));
+        return view('listings.edit',
+            compact('listing', 'media', 'categories', 'sizes', 'colors'));
     }
 
     /**
@@ -93,6 +109,10 @@ class ListingController extends Controller
                 $listing->addMediaFromRequest('photo' . $i)->toMediaCollection('listings');
             }
         }
+
+        $listing->categories()->sync($request->categories);
+        $listing->sizes()->sync($request->sizes);
+        $listing->colors()->sync($request->colors);
 
         return redirect()->route('listings.index');
     }

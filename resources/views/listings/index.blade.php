@@ -22,6 +22,15 @@
                             Description
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Categories
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Sizes
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Colors
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Price
                         </th>
                         <th class="relative px-6 py-3" colspan="2"></th>
@@ -35,6 +44,21 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $listing->title }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $listing->description }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @foreach ($listing->categories as $category)
+                                    {{ $category->name }}
+                                @endforeach
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @foreach ($listing->sizes as $size)
+                                    {{ $size->name }}
+                                @endforeach
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @foreach ($listing->colors as $color)
+                                    {{ $color->name }}
+                                @endforeach
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">${{ $listing->price }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @can('update', $listing)
