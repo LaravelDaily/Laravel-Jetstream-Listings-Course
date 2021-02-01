@@ -14,6 +14,8 @@
                     <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Title
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -28,6 +30,9 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($listings as $listing)
                         <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <img src="{{ $listing->getFirstMediaUrl('listings', 'thumb') }}" />
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $listing->title }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $listing->description }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">${{ $listing->price }}</td>

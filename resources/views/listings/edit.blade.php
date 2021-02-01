@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-jet-validation-errors class="mb-4" />
 
-            <form method="POST" action="{{ route('listings.update', $listing) }}">
+            <form method="POST" action="{{ route('listings.update', $listing) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -27,6 +27,49 @@
                     <x-jet-label for="price" value="{{ __('Price') }}" />
                     <x-jet-input id="price" class="block mt-1 w-full" type="text" name="price" :value="$listing->price" />
                 </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="photo1" value="{{ __('Photo 1') }}" />
+                    @if (isset($media[0]))
+                        <div class="mt-2 mb-4" >
+                        <img src="{{ $media[0]->getUrl('thumb') }}" />
+                        <a class="underline"
+                           href="{{ route('listings.deletePhoto', [$listing->id, $media[0]->id]) }}"
+                           onclick="return confirm('Are you sure?')">Delete photo</a>
+                            <br />
+                        </div>
+                    @endif
+                    <input type="file" name="photo1" />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="photo2" value="{{ __('Photo 2') }}" />
+                    @if (isset($media[1]))
+                        <div class="mt-2 mb-4" >
+                            <img src="{{ $media[1]->getUrl('thumb') }}" />
+                            <a class="underline"
+                               href="{{ route('listings.deletePhoto', [$listing->id, $media[1]->id]) }}"
+                               onclick="return confirm('Are you sure?')">Delete photo</a>
+                            <br />
+                        </div>
+                    @endif
+                    <input type="file" name="photo2" />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="photo3" value="{{ __('Photo 3') }}" />
+                    @if (isset($media[2]))
+                        <div class="mt-2 mb-4" >
+                            <img src="{{ $media[2]->getUrl('thumb') }}" />
+                            <a class="underline"
+                               href="{{ route('listings.deletePhoto', [$listing->id, $media[2]->id]) }}"
+                               onclick="return confirm('Are you sure?')">Delete photo</a>
+                            <br />
+                        </div>
+                    @endif
+                    <input type="file" name="photo3" />
+                </div>
+
 
                 <div class="flex items-center mt-6">
                     <x-jet-button>

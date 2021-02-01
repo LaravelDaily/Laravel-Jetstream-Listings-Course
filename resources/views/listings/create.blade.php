@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <x-jet-validation-errors class="mb-4" />
 
-            <form method="POST" action="{{ route('listings.store') }}">
+            <form method="POST" action="{{ route('listings.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div>
@@ -25,6 +25,21 @@
                 <div class="mt-4">
                     <x-jet-label for="price" value="{{ __('Price') }}" />
                     <x-jet-input id="price" class="block mt-1 w-full" type="text" name="price" :value="old('price')" />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="photo1" value="{{ __('Photo 1') }}" />
+                    <input type="file" name="photo1" />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="photo2" value="{{ __('Photo 2') }}" />
+                    <input type="file" name="photo2" />
+                </div>
+
+                <div class="mt-4">
+                    <x-jet-label for="photo3" value="{{ __('Photo 3') }}" />
+                    <input type="file" name="photo3" />
                 </div>
 
                 <div class="flex items-center mt-6">
