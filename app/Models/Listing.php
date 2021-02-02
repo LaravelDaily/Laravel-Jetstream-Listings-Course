@@ -19,6 +19,11 @@ class Listing extends Model implements HasMedia
         return $this->belongsTo(User::class);
     }
 
+    public function savedUsers()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

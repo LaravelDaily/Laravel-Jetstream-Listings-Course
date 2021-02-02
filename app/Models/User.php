@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class);
     }
+
+    public function savedListings()
+    {
+        return $this->belongsToMany(Listing::class);
+    }
 }
