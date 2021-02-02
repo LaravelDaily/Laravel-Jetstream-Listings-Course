@@ -9,6 +9,42 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <a href="{{ route('listings.create') }}"
                class="mb-4 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">{{ __('Add new listing') }}</a>
+
+            <div class="mb-4">
+                <form method="GET" action="">
+                    <input type="text" name="title" placeholder="Title" value="{{ request('title') }}" />
+                    <select name="category">
+                        <option value="">-- choose category --</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                    @if (request('category') == $category->id) selected @endif>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    <select name="size">
+                        <option value="">-- choose size --</option>
+                        @foreach ($sizes as $size)
+                            <option value="{{ $size->id }}"
+                                    @if (request('size') == $size->id) selected @endif>{{ $size->name }}</option>
+                        @endforeach
+                    </select>
+                    <select name="color">
+                        <option value="">-- choose color --</option>
+                        @foreach ($colors as $color)
+                            <option value="{{ $color->id }}"
+                                    @if (request('color') == $color->id) selected @endif>{{ $color->name }}</option>
+                        @endforeach
+                    </select>
+                    <select name="city">
+                        <option value="">-- choose city --</option>
+                        @foreach ($cities as $city)
+                            <option value="{{ $city->id }}"
+                                    @if (request('city') == $city->id) selected @endif>{{ $city->name }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="mb-4 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">Search</button>
+                </form>
+            </div>
+
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
@@ -29,6 +65,9 @@
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Colors
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            City
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                             Price
@@ -59,6 +98,9 @@
                                     {{ $color->name }}
                                 @endforeach
                             </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {{ $listing->user->city->name ?? '' }}
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap">${{ $listing->price }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @can('update', $listing)
@@ -81,6 +123,10 @@
                     @endforeach
                     </tbody>
                 </table>
+
+                <div class="mb-4 mt-4 ml-4">
+                    {{ $listings->links() }}
+                </div>
             </div>
         </div>
     </div>

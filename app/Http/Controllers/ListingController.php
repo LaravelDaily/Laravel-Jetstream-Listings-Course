@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreListingRequest;
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Color;
 use App\Models\Listing;
 use App\Models\Size;
@@ -17,9 +18,39 @@ class ListingController extends Controller
      */
     public function index()
     {
-        $listings = Listing::with(['categories', 'sizes', 'colors'])->get();
+        $listings = Listing::with(['categories', 'sizes', 'colors', 'user.city'])
+            ->when(request('title'), function ($query) {
+                $query->where('title', 'LIKE', '%'.request('title').'%');
+            })
+            ->when(request('category'), function ($query) {
+                $query->whereHas('categories', function ($query2) {
+                    $query2->where('id', request('category'));
+                });
+            })
+            ->when(request('size'), function ($query) {
+                $query->whereHas('sizes', function ($query2) {
+                    $query2->where('id', request('size'));
+                });
+            })
+            ->when(request('color'), function ($query) {
+                $query->whereHas('colors', function ($query2) {
+                    $query2->where('id', request('color'));
+                });
+            })
+            ->when(request('city'), function ($query) {
+                $query->whereHas('user.city', function ($query2) {
+                    $query2->where('id', request('city'));
+                });
+            })
+            ->paginate(5)->withQueryString();
 
-        return view('listings.index', compact('listings'));
+        $categories = Category::all();
+        $sizes = Size::all();
+        $colors = Color::all();
+        $cities = City::all();
+
+        return view('listings.index',
+            compact('listings', 'categories', 'sizes', 'colors', 'cities'));
     }
 
     /**
