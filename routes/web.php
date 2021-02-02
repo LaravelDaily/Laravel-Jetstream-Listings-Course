@@ -37,4 +37,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         'deletePhoto'
     ])->name('listings.deletePhoto');
     Route::resource('listings', \App\Http\Controllers\ListingController::class);
+
+    Route::resource('messages', \App\Http\Controllers\MessageController::class)
+        ->only(['create', 'store']);
 });
